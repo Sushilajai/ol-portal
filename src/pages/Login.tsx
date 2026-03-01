@@ -60,6 +60,12 @@ bg-gradient-to-r from-blue-100 via-slate-100 to-blue-200 px-4">
             alt="official liquidator" 
             className="text-2xl font-semibold text-gray-700 mb-8" 
           />
+<form
+  onSubmit={(e) => {
+    e.preventDefault();
+    handleLogin();
+  }}
+>
 
           {/* Email */}
           <div className="relative mb-5">
@@ -99,7 +105,7 @@ bg-gradient-to-r from-blue-100 via-slate-100 to-blue-200 px-4">
               {error}
             </div>
           )}
-
+</form>
         </div>
       </div>
     </div>

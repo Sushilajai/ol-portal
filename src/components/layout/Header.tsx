@@ -13,7 +13,8 @@ import {
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
- 
+ import logo from "../assets/img/OL.jpg";
+
 const Header = () => {
   const [open, setOpen] = useState(false);
   const { logout } = useAuth();
@@ -33,7 +34,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center gap-2">
 <img
-          src="../src/assets/img/OL.jpg"
+          src={logo}
           alt="Official Liquidator"
           className="h-16 object-contain"
         />
