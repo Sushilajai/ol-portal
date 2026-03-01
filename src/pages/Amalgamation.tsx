@@ -45,7 +45,7 @@ const Amalgamation = () => {
             {/* Upload */}
             <div className="md:col-span-2">
               <label className="block text-xs text-slate-600 mb-1">
-                Upload Document <p className="text-red-500 inline">*</p> UID: <p className="text-blue-500 inline">0258-003-014-0097</p>
+                Upload Document <p className="text-red-500 inline">*</p> UID: <p className="text-blue-500 inline">0132-0101-2627-0001</p>
               </label>
 
               <input

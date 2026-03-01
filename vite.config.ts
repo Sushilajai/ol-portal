@@ -10,5 +10,5 @@ export default defineConfig({
      
 
   ],
-  // base: "/ol-portal/",   // 👈 IMPORTANT
+   base: "/ol-portal/",   // 👈 IMPORTANT
 })

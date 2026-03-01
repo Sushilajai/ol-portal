@@ -55,7 +55,7 @@ bg-gradient-to-r from-blue-100 via-slate-100 to-blue-200 px-4">
         <div className="md:w-1/2 w-full flex flex-col justify-center px-8 md:px-16 py-12">
 
           <img 
-            src="../src/assets/img/OL.png" 
+            src="../src/assets/img/OL.jpg" 
             alt="official liquidator" 
             className="text-2xl font-semibold text-gray-700 mb-8" 
           />

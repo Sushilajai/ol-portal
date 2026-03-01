@@ -33,7 +33,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center gap-2">
 <img
-          src="../src/assets/img/OL.png"
+          src="../src/assets/img/OL.jpg"
           alt="Official Liquidator"
           className="h-16 object-contain"
         />
