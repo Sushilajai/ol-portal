@@ -1,28 +1,34 @@
-import Sidebar from "../layout/Sidebar";
-import Header from "../layout/Header";
 import { Outlet } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 
 const MainLayout = () => {
+  const { user } = useAuth();
+
+  const showSidebar = user?.role === "admin";
+
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="h-screen flex flex-col">
 
-      {/* Sidebar */}
-      <Sidebar />
+      {/* Top Header */}
+      <Header />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      {/* Body Section */}
+      <div className="flex flex-1 overflow-hidden">
 
-        {/* Header */}
-        <Header />
+        {showSidebar && (
+          <div className="w-64 border-r border-slate-200 bg-slate-50">
+            <Sidebar />
+          </div>
+        )}
 
-        {/* Page Content */}
-        <div className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-6 overflow-auto bg-slate-50">
           <Outlet />
-        </div>
+        </main>
 
       </div>
     </div>
   );
 };
-
 export default MainLayout;

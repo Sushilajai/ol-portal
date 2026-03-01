@@ -1,6 +1,21 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, UploadCloud } from "lucide-react";
+import { useRef, useState } from "react";
 
 const Amalgamation = () => {
+   const [fileName, setFileName] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+  
+    const handleClick = () => {
+      fileInputRef.current?.click();
+    };
+  
+    const handleFileChange = (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      if (e.target.files && e.target.files.length > 0) {
+        setFileName(e.target.files[0].name);
+      }
+    };
   return (
     <div className="p-3 bg-slate-50 min-h-screen">
 
@@ -27,17 +42,64 @@ const Amalgamation = () => {
 
             <Input label="Company Summons for Direction No" />
             <Input label="Amal No" />
+            {/* Upload */}
+            <div className="md:col-span-2">
+              <label className="block text-xs text-slate-600 mb-1">
+                Upload Document <p className="text-red-500 inline">*</p> UID: <p className="text-blue-500 inline">0258-003-014-0097</p>
+              </label>
 
-            <Input label="Document 1" />
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileChange}
+              />
+
+              <div
+                onClick={handleClick}
+                className="border border-dashed border-blue-400 bg-blue-50 rounded-md p-4 text-center cursor-pointer hover:bg-blue-100 transition"
+              >
+                <UploadCloud className="mx-auto text-slate-400" size={18} />
+                <p className="mt-1 text-xs text-slate-600">
+                  {fileName || "Click to upload file"}
+                </p>
+              </div>
+            </div>
+            {/* Upload multiple file*/}
+            <div className="md:col-span-2">
+              <label className="block text-xs text-slate-600 mb-1">
+               Multiple File Upload 
+              </label>
+
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                multiple={true}
+                max={5}
+                onChange={handleFileChange}
+              />
+
+              <div
+                onClick={handleClick}
+                className="border border-dashed border-blue-400 bg-blue-50 rounded-md p-4 text-center cursor-pointer hover:bg-blue-100 transition"
+              >
+                <UploadCloud className="mx-auto text-slate-400" size={18} />
+                <p className="mt-1 text-xs text-slate-600">
+                  {fileName || "Click to upload file"}
+                </p>
+              </div>
+            </div>
+            {/* <Input label="Document 1" />
             <Input label="Document 2" />
 
             <Input label="Document 3" />
             <Input label="Document 4" />
 
-            <Input label="Document 5" />
+            <Input label="Document 5" /> */}
             <Input label="File Physical Location" />
 
-            <div className="md:col-span-2">
+            {/* <div className="md:col-span-2">
               <label className="block text-[11px] text-slate-600 mb-1">
                 Document Upload
               </label>
@@ -45,9 +107,9 @@ const Amalgamation = () => {
                 type="file"
                 className="w-full text-xs border border-slate-300 rounded px-2 py-1"
               />
-            </div>
+            </div> */}
 
-            <div className="flex items-center gap-3 md:col-span-2 text-xs text-slate-600">
+            <div className="flex items-center gap-3 text-xs text-slate-600">
               <label className="flex items-center gap-1">
                 <input type="checkbox" className="accent-blue-600" />
                 Is Hindi
@@ -61,9 +123,7 @@ const Amalgamation = () => {
               <button className="flex-1 bg-slate-200 hover:bg-slate-300 py-1.5 text-white rounded text-xs transition no-button-style">
                 Print
               </button>
-              <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-1.5 rounded text-xs transition no-button-style">
-                List
-              </button>
+              
             </div>
 
           </div>

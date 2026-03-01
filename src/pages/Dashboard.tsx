@@ -1,13 +1,13 @@
 import StatCard from "../components/dashboard/StatCard";
 import RecentActivity from "../components/dashboard/RecentActivity";
-import TopQuickActions from "../components/dashboard/TopQuickActions";
+// import TopQuickActions from "../components/dashboard/TopQuickActions";
 
 const Dashboard = () => {
   return (
     <div className="space-y-6">
 
       {/* 🔥 Horizontal Quick Actions */}
-      <TopQuickActions />
+      {/* <TopQuickActions /> */}
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

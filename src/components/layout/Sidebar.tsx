@@ -6,9 +6,6 @@ import {
   BarChart3,
   Combine,
     TrendingUpDown,
-
-  Settings,
-  HelpCircle
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -23,16 +20,16 @@ const Sidebar = () => {
     <div className="w-72 min-h-screen bg-gradient-to-b from-white via-blue-50 to-blue-100 shadow-xl border-r border-blue-100 flex flex-col">
 
       {/* Logo Section */}
-      <div className="px-6 py-6 border-b border-blue-100">
+      {/* <div className="px-6 py-6 border-b border-blue-100">
         <img
-          src="/src/assets/img/OL.png"
+          src="../src/assets/img/OL.png"
           alt="Official Liquidator"
           className="h-16 object-contain"
         />
         <p className="text-xs text-slate-500 mt-2">
           High Court, Bombay
         </p>
-      </div>
+      </div> */}
 
       {/* Navigation */}
       <nav className="flex-1 px-4 py-6 space-y-2">
@@ -70,9 +67,9 @@ const Sidebar = () => {
         />
 
         <SidebarItem
-          to={`${basePath}/reports`}
+          to={`${basePath}/ReportingPage`}
           icon={<BarChart3 size={18} />}
-          label="Reports"
+          label="ReportingPage"
         />
       </nav>
 

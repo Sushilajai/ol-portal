@@ -48,7 +48,7 @@ const Document = () => {
             {/* Upload */}
             <div className="md:col-span-2">
               <label className="block text-xs text-slate-600 mb-1">
-                Upload Document
+                Upload Document <p className="text-red-500 inline">*</p> UID: <p className="text-blue-500 inline">0258-003-014-0097</p>
               </label>
 
               <input
@@ -68,16 +68,35 @@ const Document = () => {
                 </p>
               </div>
             </div>
+            {/* Upload multiple file*/}
+            <div className="md:col-span-2">
+              <label className="block text-xs text-slate-600 mb-1">
+               Multiple File Upload 
+              </label>
 
-            <Input label="Document 1" />
-            <Input label="Document 2" />
-            <Input label="Document 3" />
-            <Input label="Document 4" />
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                multiple={true}
+                max={5}
+                onChange={handleFileChange}
+              />
 
-            <Input label="Applicant Name" />
+              <div
+                onClick={handleClick}
+                className="border border-dashed border-blue-400 bg-blue-50 rounded-md p-4 text-center cursor-pointer hover:bg-blue-100 transition"
+              >
+                <UploadCloud className="mx-auto text-slate-400" size={18} />
+                <p className="mt-1 text-xs text-slate-600">
+                  {fileName || "Click to upload file"}
+                </p>
+              </div>
+            </div>
+            {/* <Input label="Applicant Name" /> */}
             <Input label="File Physical Location" />
 
-            <div className="flex items-center gap-4 md:col-span-2 text-xs text-slate-600">
+            <div className="flex items-center gap-4 text-xs text-slate-600">
               <label className="flex items-center gap-1">
                 <input type="checkbox" className="accent-blue-600" />
                 Important

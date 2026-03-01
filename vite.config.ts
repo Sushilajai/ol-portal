@@ -7,5 +7,8 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+     
+
   ],
+  // base: "/ol-portal/",   // 👈 IMPORTANT
 })

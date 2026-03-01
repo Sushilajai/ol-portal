@@ -2,19 +2,22 @@ import { Pencil, Trash2,UploadCloud } from "lucide-react";
 import { useRef, useState } from "react";
 const Establishment = () => {
     const [fileName, setFileName] = useState<string | null>(null);
-const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+  
+    const handleClick = () => {
+      fileInputRef.current?.click();
+    };
+  
+    const handleFileChange = (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      if (e.target.files && e.target.files.length > 0) {
+        setFileName(e.target.files[0].name);
+      }
+    };
 
-const handleUploadClick = () => {
-  fileInputRef.current?.click();
-};
 
-const handleFileChange = (
-  e: React.ChangeEvent<HTMLInputElement>
-) => {
-  if (e.target.files && e.target.files.length > 0) {
-    setFileName(e.target.files[0].name);
-  }
-};
+
   return (
     <div className="p-3 bg-slate-50 min-h-screen">
 
@@ -37,29 +40,54 @@ const handleFileChange = (
 
             <Select label="Document Type" />
 
-            <div>
-  <label className="block text-[11px] text-slate-600 mb-1">
-    Document Upload
-  </label>
+           {/* Upload */}
+            <div className="md:col-span-2">
+              <label className="block text-xs text-slate-600 mb-1">
+                Upload Document <p className="text-red-500 inline">*</p> UID: <p className="text-blue-500 inline">0258-003-014-0097</p>
+              </label>
 
-  <input
-    type="file"
-    ref={fileInputRef}
-    className="hidden"
-    onChange={handleFileChange}
-  />
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileChange}
+              />
 
-  <div
-    onClick={handleUploadClick}
-    className="border border-dashed border-blue-400 bg-blue-50 rounded-md p-4 text-center cursor-pointer hover:bg-blue-100 transition"
-  >
-    <UploadCloud className="mx-auto text-blue-500" size={20} />
+              <div
+                onClick={handleClick}
+                className="border border-dashed border-blue-400 bg-blue-50 rounded-md p-4 text-center cursor-pointer hover:bg-blue-100 transition"
+              >
+                <UploadCloud className="mx-auto text-slate-400" size={18} />
+                <p className="mt-1 text-xs text-slate-600">
+                  {fileName || "Click to upload file"}
+                </p>
+              </div>
+            </div>
+            {/* Upload multiple file*/}
+            <div className="md:col-span-2">
+              <label className="block text-xs text-slate-600 mb-1">
+               Multiple File Upload 
+              </label>
 
-    <p className="text-xs text-slate-700 mt-1">
-      {fileName ? fileName : "Click to upload file"}
-    </p>
-  </div>
-</div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                multiple={true}
+                max={5}
+                onChange={handleFileChange}
+              />
+
+              <div
+                onClick={handleClick}
+                className="border border-dashed border-blue-400 bg-blue-50 rounded-md p-4 text-center cursor-pointer hover:bg-blue-100 transition"
+              >
+                <UploadCloud className="mx-auto text-slate-400" size={18} />
+                <p className="mt-1 text-xs text-slate-600">
+                  {fileName || "Click to upload file"}
+                </p>
+              </div>
+            </div>
 
             <Input label="File Physical Location" />
 
@@ -77,9 +105,7 @@ const handleFileChange = (
               <button className="flex-1 bg-slate-200 hover:bg-slate-300 py-1.5 text-white rounded text-xs transition no-button-style">
                 Print
               </button>
-              <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-1.5 rounded text-xs transition no-button-style">
-                List
-              </button>
+             
             </div>
 
           </div>

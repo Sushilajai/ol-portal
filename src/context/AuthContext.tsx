@@ -9,19 +9,13 @@ import { type User, type Role } from "../types/auth";
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => void;
+  login: (email: string, password: string) => string | null;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | null>(() => {
@@ -29,30 +23,44 @@ export const AuthProvider = ({
     return stored ? JSON.parse(stored) : null;
   });
 
-  const login = (email: string, password: string) => {
-    let role: Role | null = null;
+ const login = (email: string, password: string): string | null => {
+  if (!email.trim() || !password.trim()) {
+    return "Email and Password are required";
+  }
 
-    // 🔥 Replace with real API later
-    if (email === "admin@test.com") role = "admin";
-    if (email === "officer@test.com") role = "officer";
+  let role: Role | null = null;
 
-    if (!role) {
-      alert("Invalid credentials");
-      return;
-    }
+  if (email === "admin@senseware.net" && password === "admin123") {
+    role = "admin";
+  } else if (
+    email === "vinodvalmiki@mca.gov.in" &&
+    password === "vinod@1234"
+  ) {
+    role = "officer";
+  }
 
-    const loggedUser: User = { email, role };
+  if (!role) {
+    return "Invalid email or password";
+  }
 
-    setUser(loggedUser);
-    localStorage.setItem("user", JSON.stringify(loggedUser));
+  const loggedUser: User = { email, role };
 
-    navigate(role === "admin" ? "/admin/dashboard" : "/officer/dashboard");
-  };
+  setUser(loggedUser);
+  localStorage.setItem("user", JSON.stringify(loggedUser));
+
+  navigate(
+    role === "admin"
+      ? "/admin/dashboard"
+      : "/officer/dashboard"
+  );
+
+  return null;
+};
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
-    navigate("/");
+    navigate("/");   // redirect to login page
   };
 
   return (
@@ -61,10 +69,10 @@ export const AuthProvider = ({
     </AuthContext.Provider>
   );
 };
-
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  if (!context)
+  if (!context) {
     throw new Error("useAuth must be used inside AuthProvider");
+  }
   return context;
 };
