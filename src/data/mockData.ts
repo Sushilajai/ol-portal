@@ -134,44 +134,64 @@ export const mockDividendRecords: DividendRecord[] = [
 // Mock Dispatch Records
 export const mockDispatchRecords: DispatchRecord[] = [
   {
-    uid: "0001-2425-01-02-1234",
+    uid: "2526 / 0001 / 01",
     comp_id: "0001",
+    companyName: "Tata Steel Limited",
     recipientName: "Mr. Rajesh Kumar",
     recipientAddress: "123 Business Park, Andheri East, Mumbai - 400069",
-    documentCategory: "Notice",
+    documentCategory: "Sec 1",
     deliveryNoteRequired: true,
     status: "Pending"
   },
   {
-    uid: "0002-2425-02-01-5678",
+    uid: "2526 / 0002 / 02",
     comp_id: "0002",
+    companyName: "Reliance Industries",
     recipientName: "Ms. Priya Sharma",
     recipientAddress: "456 Corporate Tower, Bandra West, Mumbai - 400050",
-    documentCategory: "Order",
+    documentCategory: "Sec 2",
     deliveryNoteRequired: false,
-    status: "Dispatched",
+    status: "Delivered",
     awbNumber: "AWB123456789",
-    dispatchDate: "2024-03-10"
+    dispatchDate: "2024-03-10",
+    deliveryDate: "2024-03-12"
   },
   {
-    uid: "0003-2425-01-03-9012",
+    uid: "2526 / 0003 / 03",
     comp_id: "0003",
+    companyName: "HDFC Bank Limited",
     recipientName: "Dr. Amit Patel",
     recipientAddress: "789 Industrial Estate, Powai, Mumbai - 400076",
-    documentCategory: "Report",
+    documentCategory: "Sec 3",
     deliveryNoteRequired: true,
-    status: "Pending"
+    status: "In Transit",
+    awbNumber: "AWB111222333",
+    dispatchDate: "2024-03-15"
   },
   {
-    uid: "0001-2425-03-04-3456",
-    comp_id: "0001",
+    uid: "2526 / 0004 / 04",
+    comp_id: "0004",
+    companyName: "Infosys Limited",
     recipientName: "Mr. Vikram Singh",
     recipientAddress: "321 Tech Park, Whitefield, Bangalore - 560066",
-    documentCategory: "Notice",
+    documentCategory: "Sec 4",
     deliveryNoteRequired: true,
-    status: "Dispatched",
+    status: "In Transit",
     awbNumber: "AWB987654321",
     dispatchDate: "2024-03-08"
+  },
+  {
+    uid: "2526 / 0005 / 05",
+    comp_id: "0005",
+    companyName: "TCS (Tata Consultancy Services)",
+    recipientName: "Ms. Anjali Verma",
+    recipientAddress: "IT Park, Pune - 411001",
+    documentCategory: "Sec 5",
+    deliveryNoteRequired: false,
+    status: "Delivered",
+    awbNumber: "AWB555666777",
+    dispatchDate: "2024-03-05",
+    deliveryDate: "2024-03-07"
   },
 ];
 
@@ -193,15 +213,15 @@ export const mockUsers: UserRecord[] = [
   },
   {
     id: "U003",
-    name: "Accounts Manager",
-    email: "accounts@ol.gov.in",
-    role: "AccountsAdmin",
-    department: "Accounts"
+    name: "Officer Viewer",
+    email: "officer@ol.gov.in",
+    role: "OfficerViewer",
+    department: "Operations"
   },
   {
     id: "U004",
-    name: "Senior Accounts Officer",
-    email: "accounts2@ol.gov.in",
+    name: "Accounts Manager",
+    email: "accounts@ol.gov.in",
     role: "AccountsAdmin",
     department: "Accounts"
   },
@@ -258,14 +278,3 @@ export const mockBranchOfficers = [
   { id: "BO004", name: "Neha Singh", email: "neha.singh@ol.gov.in", sections: ["S004"] },
 ];
 
-// Document Categories
-export const documentCategories = [
-  "Notice",
-  "Order",
-  "Report",
-  "Petition",
-  "Affidavit",
-  "Certificate",
-  "Dividend Warrant",
-  "Other"
-];

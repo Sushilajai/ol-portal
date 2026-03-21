@@ -40,13 +40,14 @@ export interface DividendRecord {
 }
 
 export interface DispatchRecord {
-  uid: string; // Format: Comp_id-Finyear-DocCategory-Section-DocID
+  uid: string; // Format: Year / Sequence No / Doc Category (e.g., 2526 / 0012 / 01)
   comp_id: string;
+  companyName: string;
   recipientName: string;
   recipientAddress: string;
   documentCategory: string;
   deliveryNoteRequired: boolean;
-  status: "Pending" | "Dispatched" | "Delivered";
+  status: "Pending" | "In Transit" | "Delivered";
   awbNumber?: string;
   dispatchDate?: string;
   deliveryDate?: string;
@@ -56,7 +57,7 @@ export interface UserRecord {
   id: string;
   name: string;
   email: string;
-  role: "SuperAdmin" | "ExecutiveViewer" | "AccountsAdmin" | "TD_Admin" | "DispatchClerk";
+  role: "SuperAdmin" | "ExecutiveViewer" | "OfficerViewer" | "AccountsAdmin" | "TD_Admin" | "DispatchClerk";
   department: string;
 }
 
@@ -73,11 +74,36 @@ export interface BranchOfficer {
   sections: string[]; // Array of section IDs
 }
 
-// UID Generator utility
-export const generateUID = (comp_id: string, docCategory: string, section: string): string => {
-  const currentYear = new Date().getFullYear();
-  const finYear = `${currentYear.toString().slice(-2)}${(currentYear + 1).toString().slice(-2)}`;
-  const docId = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
+// Document Category to Code Mapping
+export const documentCategoryMap: Record<string, string> = {
+  "Sec 1": "01",
+  "Sec 2": "02",
+  "Sec 3": "03",
+  "Sec 4": "04",
+  "Sec 5": "05",
+  "Amalgamation": "06",
+  "Accounts": "07",
+  "Admin": "08",
+  "PA": "09",
+  "Legal": "10"
+};
+
+export const documentCategories = Object.keys(documentCategoryMap);
+
+// UID Generator utility - Format: Year / Sequence No / Doc Category
+export const generateUID = (categoryName: string, sequenceNo: number): string => {
+  const today = new Date();
+  const month = today.getMonth() + 1; // 1-12
+  const year = today.getFullYear();
   
-  return `${comp_id}-${finYear}-${docCategory.padStart(2, '0')}-${section.padStart(2, '0')}-${docId}`;
+  // Indian Financial Year: April to March
+  // If current month is April or later, FY is current year to next year
+  // If current month is before April, FY is previous year to current year
+  const finYear = month >= 4 ? year : year - 1;
+  const finYearCode = `${finYear.toString().slice(-2)}${(finYear + 1).toString().slice(-2)}`;
+  
+  const categoryCode = documentCategoryMap[categoryName] || "00";
+  const seqNo = sequenceNo.toString().padStart(4, '0');
+  
+  return `${finYearCode} / ${seqNo} / ${categoryCode}`;
 };
