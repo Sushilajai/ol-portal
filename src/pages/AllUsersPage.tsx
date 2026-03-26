@@ -22,6 +22,7 @@ const AllUsersPage = () => {
     name: "",
     email: "",
     role: "AccountsAdmin" as const,
+    temporaryPassword: "",
   });
 
   const [sectionForm, setSectionForm] = useState({
@@ -45,19 +46,21 @@ const AllUsersPage = () => {
   // Users Tab
   const handleAddUser = () => {
     setEditingUser(null);
-    setFormData({ name: "", email: "", role: "AccountsAdmin" });
+    setFormData({ name: "", email: "", role: "AccountsAdmin", temporaryPassword: "" });
     setShowUserModal(true);
   };
 
   const handleSaveUser = () => {
-    if (!formData.name || !formData.email) return;
+    if (!formData.name || !formData.email || !formData.temporaryPassword) return;
 
     if (editingUser) {
-      setUsers(users.map(u => u.id === editingUser.id ? { ...u, ...formData } : u));
+      setUsers(users.map(u => u.id === editingUser.id ? { ...u, name: formData.name, email: formData.email, role: formData.role } : u));
     } else {
       const newUser: UserRecord = {
         id: `U${String(users.length + 1).padStart(3, "0")}`,
-        ...formData,
+        name: formData.name,
+        email: formData.email,
+        role: formData.role,
         department: formData.role === "AccountsAdmin" ? "Accounts" : formData.role === "TD_Admin" ? "Target & Dividend" : "Dispatch",
       };
       setUsers([...users, newUser]);
@@ -232,7 +235,7 @@ const AllUsersPage = () => {
                         <button
                           onClick={() => {
                             setEditingUser(user);
-                            setFormData({ name: user.name, email: user.email, role: user.role as any });
+                            setFormData({ name: user.name, email: user.email, role: user.role as any, temporaryPassword: "" });
                             setShowUserModal(true);
                           }}
                           className="p-3 hover:bg-blue-100 rounded-xl transition-all duration-200 transform hover:scale-110 active:scale-95"
@@ -501,6 +504,16 @@ const AllUsersPage = () => {
                   <option value="DispatchClerk">Dispatch Clerk</option>
                   <option value="SuperAdmin">Super Admin</option>
                 </select>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-3">Temporary Password *</label>
+                <input
+                  type="text"
+                  value={formData.temporaryPassword}
+                  onChange={(e) => setFormData({ ...formData, temporaryPassword: e.target.value })}
+                  className="w-full px-5 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all"
+                  placeholder="Enter temporary password"
+                />
               </div>
             </div>
             <div className="flex gap-4 mt-10">
