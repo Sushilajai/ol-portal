@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Mail, Lock, Info } from "lucide-react";
-import logo from "../assets/img/OL.jpg";
+import logo from "../assets/img/OL.png";
 
 const Login = () => {
   const { login } = useAuth();
@@ -71,7 +71,7 @@ bg-gradient-to-r from-blue-100 via-slate-100 to-blue-200 px-4">
           <img 
             src={logo} 
             alt="official liquidator" 
-            className="text-2xl font-semibold text-gray-700 mb-8" 
+            className="h-20 w-auto object-contain mb-8" 
           />
 
           <form

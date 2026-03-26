@@ -1,5 +1,4 @@
 import {
-  Bell,
   ChevronDown,
   LogOut,
   User,
@@ -8,18 +7,25 @@ import {
   Target,
   Truck,
   Users,
+  Plus,
 } from "lucide-react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import logo from "../../assets/img/OL.jpg";
+import logo from "../../assets/img/OL.png";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const { user, logout } = useAuth();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
+  };
+
+  const handleNewDispatch = () => {
+    // Dispatch event to trigger modal in DispatchClerkView
+    window.dispatchEvent(new CustomEvent('openDispatchModal'));
   };
 
   const getNavigationItems = () => {
@@ -32,7 +38,7 @@ const Header = () => {
         { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, gradient: "from-[#0F2D5C] to-[#1E3A8A]", bgGradient: "from-[#EEF2FF] to-[#E0E7FF]", textColor: "text-[#1E3A8A]" },
         { to: "/billing", label: "Billing", icon: DollarSign, gradient: "from-[#B45309] to-[#EA580C]", bgGradient: "from-[#FFF7ED] to-[#FFEDD5]", textColor: "text-[#B45309]" },
         { to: "/liquidation", label: "Liquidation", icon: Target, gradient: "from-[#0F766E] to-[#0E7490]", bgGradient: "from-[#ECFEFF] to-[#E0F2FE]", textColor: "text-[#0E7490]" },
-        { to: "/dispatch", label: "Dispatch", icon: Truck, gradient: "from-[#3730A3] to-[#4338CA]", bgGradient: "from-[#EEF2FF] to-[#E0E7FF]", textColor: "text-[#4338CA]" }
+        { to: "/dispatch", label: "Dispatch", icon: Truck, gradient: "from-[#7C3AED] to-[#A855F7]", bgGradient: "from-[#F3E8FF] to-[#EDE9FE]", textColor: "text-[#7C3AED]" }
       );
     }
 
@@ -46,8 +52,7 @@ const Header = () => {
       items.push(
         { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, gradient: "from-[#0F2D5C] to-[#1E3A8A]", bgGradient: "from-[#EEF2FF] to-[#E0E7FF]", textColor: "text-[#1E3A8A]" },
         { to: "/billing", label: "Billing", icon: DollarSign, gradient: "from-[#B45309] to-[#EA580C]", bgGradient: "from-[#FFF7ED] to-[#FFEDD5]", textColor: "text-[#B45309]" },
-        { to: "/liquidation", label: "Liquidation", icon: Target, gradient: "from-[#0F766E] to-[#0E7490]", bgGradient: "from-[#ECFEFF] to-[#E0F2FE]", textColor: "text-[#0E7490]" },
-        { to: "/dispatch", label: "Dispatch", icon: Truck, gradient: "from-[#3730A3] to-[#4338CA]", bgGradient: "from-[#EEF2FF] to-[#E0E7FF]", textColor: "text-[#4338CA]" }
+        { to: "/liquidation", label: "Liquidation", icon: Target, gradient: "from-[#0F766E] to-[#0E7490]", bgGradient: "from-[#ECFEFF] to-[#E0F2FE]", textColor: "text-[#0E7490]" }
       );
     }
 
@@ -64,9 +69,7 @@ const Header = () => {
     }
 
     if (user.role === "DispatchClerk") {
-      items.push(
-        { to: "/dispatch", label: "Dispatch", icon: Truck, gradient: "from-[#3730A3] to-[#4338CA]", bgGradient: "from-[#EEF2FF] to-[#E0E7FF]", textColor: "text-[#4338CA]" }
-      );
+      // Don't add Dispatch to navigation for DispatchClerk
     }
 
     if (user.role === "SuperAdmin") {
@@ -124,15 +127,16 @@ const Header = () => {
             })}
           </nav>
 
-          {/* Enhanced Notification */}
-          <div className="relative cursor-pointer group">
-            <div className="bg-gradient-to-r from-slate-100 to-slate-200 p-3 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
-              <Bell className="text-slate-600 group-hover:text-slate-800 transition-colors" size={20} />
-              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-lg animate-pulse-soft">
-                3
-              </span>
-            </div>
-          </div>
+          {/* New Dispatch Button (Only for DispatchClerk on /dispatch route) */}
+          {user?.role === "DispatchClerk" && location.pathname === "/dispatch" && (
+            <button
+              onClick={handleNewDispatch}
+              className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-semibold flex items-center gap-2 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg shadow-md"
+            >
+              <Plus size={18} />
+              New Dispatch
+            </button>
+          )}
 
           {/* Enhanced User Dropdown */}
           <div

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Truck, Plus, Clock, CheckCircle, Search, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Truck, Clock, CheckCircle, Search, X } from "lucide-react";
 import { mockDispatchRecords } from "../../data/mockData";
 import { documentCategories, generateUID } from "../../types/data";
 import type { DispatchRecord } from "../../types/data";
@@ -38,6 +38,15 @@ const DispatchClerkView = () => {
   const totalDispatches = dispatchRecords.length;
   const pendingCount = dispatchRecords.filter(r => r.status === "Pending").length;
   const deliveredCount = dispatchRecords.filter(r => r.status === "Delivered").length;
+
+  // Listen for modal open event from Header
+  useEffect(() => {
+    const handleOpenModal = () => {
+      setShowCreateModal(true);
+    };
+    window.addEventListener('openDispatchModal', handleOpenModal);
+    return () => window.removeEventListener('openDispatchModal', handleOpenModal);
+  }, []);
 
   // Handle document category change - generate UID
   const handleCategoryChange = (category: string) => {
@@ -146,37 +155,37 @@ const DispatchClerkView = () => {
 
         {/* Metric Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-center justify-between mb-3">
-              <div className="bg-blue-100 p-3 rounded-lg">
-                <Truck className="text-blue-600" size={20} />
+          <div className="bg-blue-100 rounded-xl border border-blue-200 p-4 shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-2">
+              <div className="bg-blue-600 p-2 rounded-lg">
+                <Truck className="text-white" size={18} />
               </div>
-              <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">Total</span>
+              <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-1 rounded">Total</span>
             </div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Dispatches</p>
-            <p className="text-3xl font-bold text-slate-900 mt-1">{totalDispatches}</p>
+            <p className="text-xs font-bold text-blue-700 uppercase tracking-wider">Total Dispatches</p>
+            <p className="text-2xl font-bold text-blue-900 mt-1">{totalDispatches}</p>
           </div>
 
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-center justify-between mb-3">
-              <div className="bg-orange-100 p-3 rounded-lg">
-                <Clock className="text-orange-600" size={20} />
+          <div className="bg-orange-100 rounded-xl border border-orange-200 p-4 shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-2">
+              <div className="bg-orange-600 p-2 rounded-lg">
+                <Clock className="text-white" size={18} />
               </div>
-              <span className="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded">Pending</span>
+              <span className="text-xs font-semibold text-orange-700 bg-orange-50 px-2 py-1 rounded">Pending</span>
             </div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Pending Status</p>
-            <p className="text-3xl font-bold text-slate-900 mt-1">{pendingCount}</p>
+            <p className="text-xs font-bold text-orange-700 uppercase tracking-wider">Pending Status</p>
+            <p className="text-2xl font-bold text-orange-900 mt-1">{pendingCount}</p>
           </div>
 
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-center justify-between mb-3">
-              <div className="bg-green-100 p-3 rounded-lg">
-                <CheckCircle className="text-green-600" size={20} />
+          <div className="bg-green-100 rounded-xl border border-green-200 p-4 shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-2">
+              <div className="bg-green-600 p-2 rounded-lg">
+                <CheckCircle className="text-white" size={18} />
               </div>
-              <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">Delivered</span>
+              <span className="text-xs font-semibold text-green-700 bg-green-50 px-2 py-1 rounded">Delivered</span>
             </div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Delivery Confirmation</p>
-            <p className="text-3xl font-bold text-slate-900 mt-1">{deliveredCount}</p>
+            <p className="text-xs font-bold text-green-700 uppercase tracking-wider">Delivery Confirmation</p>
+            <p className="text-2xl font-bold text-green-900 mt-1">{deliveredCount}</p>
           </div>
         </div>
 
@@ -225,15 +234,6 @@ const DispatchClerkView = () => {
               Pending Updates
             </button>
           </div>
-
-          {/* New Dispatch Button */}
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold flex items-center gap-2 transition-all transform hover:-translate-y-0.5 active:scale-95 shadow-sm hover:shadow-md"
-          >
-            <Plus size={18} />
-            New Dispatch
-          </button>
         </div>
 
         {/* Data Table */}
@@ -335,8 +335,9 @@ const DispatchClerkView = () => {
       {/* Create Dispatch Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-100">
-            <div className="flex items-center justify-between mb-6">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[85vh] border border-slate-100 flex flex-col">
+            {/* Modal Header - Fixed */}
+            <div className="flex items-center justify-between p-6 border-b border-slate-200 flex-shrink-0">
               <h2 className="text-2xl font-bold text-slate-900">Create Dispatch</h2>
               <button
                 onClick={() => setShowCreateModal(false)}
@@ -346,7 +347,8 @@ const DispatchClerkView = () => {
               </button>
             </div>
 
-            <form onSubmit={handleCreateSubmit} className="space-y-4">
+            {/* Modal Body - Scrollable */}
+            <form onSubmit={handleCreateSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
               {/* Recipient Name */}
               <div className="space-y-1">
                 <label className="block text-sm font-semibold text-slate-700">Recipient Name *</label>
@@ -434,24 +436,25 @@ const DispatchClerkView = () => {
                   Delivery Note Required?
                 </label>
               </div>
-
-              {/* Modal Footer */}
-              <div className="flex gap-3 pt-4 border-t border-slate-200">
-                <button
-                  type="button"
-                  onClick={() => setShowCreateModal(false)}
-                  className="flex-1 px-4 py-2 border border-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-all"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all transform hover:-translate-y-0.5 active:scale-95"
-                >
-                  Create
-                </button>
-              </div>
             </form>
+
+            {/* Modal Footer - Fixed */}
+            <div className="flex gap-3 p-6 border-t border-slate-200 flex-shrink-0 bg-white">
+              <button
+                type="button"
+                onClick={() => setShowCreateModal(false)}
+                className="flex-1 px-4 py-2 border border-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                onClick={handleCreateSubmit}
+                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all transform hover:-translate-y-0.5 active:scale-95"
+              >
+                Create
+              </button>
+            </div>
           </div>
         </div>
       )}

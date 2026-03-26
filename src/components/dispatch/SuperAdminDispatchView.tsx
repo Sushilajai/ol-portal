@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Truck, Search, Filter } from "lucide-react";
+import { Truck, Search, Filter, Clock, CheckCircle } from "lucide-react";
 import { mockDispatchRecords } from "../../data/mockData";
 import type { DispatchRecord } from "../../types/data";
 
@@ -14,6 +14,11 @@ const SuperAdminDispatchView = () => {
     awbSearch: "",
     statusFilter: "All"
   });
+
+  // Calculate metrics
+  const totalDispatches = dispatchRecords.length;
+  const pendingCount = dispatchRecords.filter(r => r.status === "Pending").length;
+  const deliveredCount = dispatchRecords.filter(r => r.status === "Delivered").length;
 
   // Filter records based on all criteria
   const filteredRecords = dispatchRecords.filter(record => {
@@ -43,6 +48,46 @@ const SuperAdminDispatchView = () => {
           <div>
             <h1 className="text-3xl font-bold">Dispatch Audit Dashboard</h1>
             <p className="text-slate-300 text-sm">Comprehensive dispatch records audit and monitoring</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Metric Cards */}
+      <div className="bg-white border-b border-slate-200 p-6">
+        <div className="max-w-full mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-blue-100 rounded-xl border border-blue-200 p-4 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-center justify-between mb-2">
+                <div className="bg-blue-600 p-2 rounded-lg">
+                  <Truck className="text-white" size={18} />
+                </div>
+                <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-1 rounded">Total</span>
+              </div>
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider">Total Dispatches</p>
+              <p className="text-2xl font-bold text-blue-900 mt-1">{totalDispatches}</p>
+            </div>
+
+            <div className="bg-orange-100 rounded-xl border border-orange-200 p-4 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-center justify-between mb-2">
+                <div className="bg-orange-600 p-2 rounded-lg">
+                  <Clock className="text-white" size={18} />
+                </div>
+                <span className="text-xs font-semibold text-orange-700 bg-orange-50 px-2 py-1 rounded">Pending</span>
+              </div>
+              <p className="text-xs font-bold text-orange-700 uppercase tracking-wider">Pending Status</p>
+              <p className="text-2xl font-bold text-orange-900 mt-1">{pendingCount}</p>
+            </div>
+
+            <div className="bg-green-100 rounded-xl border border-green-200 p-4 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-center justify-between mb-2">
+                <div className="bg-green-600 p-2 rounded-lg">
+                  <CheckCircle className="text-white" size={18} />
+                </div>
+                <span className="text-xs font-semibold text-green-700 bg-green-50 px-2 py-1 rounded">Delivered</span>
+              </div>
+              <p className="text-xs font-bold text-green-700 uppercase tracking-wider">Delivery Confirmation</p>
+              <p className="text-2xl font-bold text-green-900 mt-1">{deliveredCount}</p>
+            </div>
           </div>
         </div>
       </div>
