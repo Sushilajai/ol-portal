@@ -1,44 +1,89 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import OfficerDashboard from "./pages/OfficerDashboard";
-import Company from "./pages/AddCompany";
-import Document from "./pages/Document";
+import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import BillingPage from "./pages/BillingPage";
+import LiquidationPage from "./pages/LiquidationPage";
+import DispatchPage from "./pages/DispatchPage";
+import AllUsersPage from "./pages/AllUsersPage";
+import Profile from "./pages/Profile";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import MainLayout from "./components/layout/MainLayout";
-import Amalgamation from "./pages/Amalgamation";
-import Establishment from "./pages/Establishment";
-import ReportingPage from "./pages/ReportingPage";
 
 function App() {
   return (
-    <AuthProvider>
-      <Routes>
+    <Routes>
+      <Route path="/" element={<Login />} />
 
-        {/* <Route path="/ol-portal/" element={<Login />} /> */}
-        <Route path="/" element={<Login />} />
-
-        <Route
+      <Route
+        element={
+          <ProtectedRoute allowedRoles={["SuperAdmin", "ExecutiveViewer", "OfficerViewer", "AccountsAdmin", "TD_Admin", "DispatchClerk"]}>
+            <MainLayout />
+          </ProtectedRoute>
+        }
+      >
+        {/* Dashboard - SuperAdmin and ExecutiveViewer */}
+        <Route 
+          path="/dashboard" 
           element={
-            <ProtectedRoute allowedRoles={["admin", "officer"]}>
-              <MainLayout />
+            <ProtectedRoute allowedRoles={["SuperAdmin", "ExecutiveViewer", "OfficerViewer"]}>
+              <SuperAdminDashboard />
             </ProtectedRoute>
-          }
-        >
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/company" element={<Company />} />
-          <Route path="/document" element={<Document />} />
-          <Route path="/amalgamation" element={<Amalgamation />} />
-          <Route path="/establishment" element={<Establishment />} />
-          <Route path="/officer/dashboard" element={<OfficerDashboard />} />
-          <Route path="/ReportingPage" element={<ReportingPage />} />
-        </Route>
+          } 
+        />
+        
+        {/* Profile - All authenticated users */}
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute allowedRoles={["SuperAdmin", "ExecutiveViewer", "OfficerViewer", "AccountsAdmin", "TD_Admin", "DispatchClerk"]}>
+              <Profile />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Billing - AccountsAdmin, SuperAdmin, and OfficerViewer */}
+        <Route 
+          path="/billing" 
+          element={
+            <ProtectedRoute allowedRoles={["AccountsAdmin", "SuperAdmin", "OfficerViewer"]}>
+              <BillingPage />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Liquidation - TD_Admin, SuperAdmin, and OfficerViewer */}
+        <Route 
+          path="/liquidation" 
+          element={
+            <ProtectedRoute allowedRoles={["TD_Admin", "SuperAdmin", "OfficerViewer"]}>
+              <LiquidationPage />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Dispatch - DispatchClerk, SuperAdmin, and OfficerViewer */}
+        <Route 
+          path="/dispatch" 
+          element={
+            <ProtectedRoute allowedRoles={["DispatchClerk", "SuperAdmin", "OfficerViewer"]}>
+              <DispatchPage />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* All Users - SuperAdmin only */}
+        <Route 
+          path="/users" 
+          element={
+            <ProtectedRoute allowedRoles={["SuperAdmin"]}>
+              <AllUsersPage />
+            </ProtectedRoute>
+          } 
+        />
+      </Route>
 
-        <Route path="*" element={<Navigate to="/" />} />
-
-      </Routes>
-    </AuthProvider>
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
 
